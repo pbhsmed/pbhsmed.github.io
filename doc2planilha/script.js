@@ -46,7 +46,7 @@ var spinner;
 function xw(data, cb) {
     pending = true;
     spinner = new Spinner().spin(drop);
-    var worker = new Worker('https://sheetjs.com/demos/modify.js');
+    var worker = new Worker('./modify.js');
     worker.onmessage = function (e) {
         switch (e.data.t) {
             case 'ready': break;

@@ -1,7 +1,7 @@
 <!DOCTYPE html><html>
 
 <head>
-    <title>SheetJS JS-XLSX In-Browser HTML Table Export Demo</title>
+    <title>SMED - Documento de Texto para Planilha</title>
     <meta charset="utf-8" />
     <style>
         .xport,
@@ -36,28 +36,22 @@
     <script src="https://sheetjs.com/demos/alertify.js"></script>
     <link rel="stylesheet" media="screen" href="https://sheetjs.com/demos/alertify.css">
 
-    <pre><h3><a href="//sheetjs.com/">SheetJS</a> JS-XLSX In-Browser HTML Table Edit Demo</h3>
-This demonstration focuses on HTML contenteditable.  You can drop a workbook
-into the box and your browser will update the editable HTML table below.  After
-making changes, you can generate a new file with the table contents.
-<div id="drop">
-      +---------------------------------------------------------+
-   \\ |                                                         | //
-----\\|    <b>Drop a spreadsheet file here to change table data</b>    |//----
-------|                                                         |------
-----//|   (note: this demo will only process the first sheet)   |\\----
-   // |                                                         | \\
-      +---------------------------------------------------------+
-</div>
-
-Need a file? <a href="https://obamawhitehouse.archives.gov/sites/default/files/omb/budget/fy2014/assets/receipts.xls">OMB FY 2014 Federal Receipts</a>
-
-<b>Editable Data Table:</b> (click a cell to edit it)
-</pre>
-    <table id="data-table" border="1">
-    </table>
-    <br />
-    <pre><b>Export it!</b></pre>
+    <pre>
+        <h3>Documento de Texto para Planilha</h3>
+        <div id="drop">
+              +---------------------------------------------------------+
+           \\ |                                                         | //
+        ----\\|    <b>Drop a spreadsheet file here to change table data</b>    |//----
+        ------|                                                         |------
+        ----//|   (note: this demo will only process the first sheet)   |\\----
+           // |                                                         | \\
+              +---------------------------------------------------------+
+        </div>
+    </pre>
+    <br/>
+    <pre>
+        <b>Export it!</b>
+    </pre>
     <table id="xport">
         <tr>
             <td>
@@ -89,14 +83,13 @@ Need a file? <a href="https://obamawhitehouse.archives.gov/sites/default/files/o
             </td>
         </tr>
     </table>
-    <pre><b>Powered by the <a href="//sheetjs.com/opensource">community version of sheetjs</a></b>
 
-    <b>Compatibility notes:</b>
-    - Editable table leverages the HTML5 contenteditable feature, supported in most browsers.
-    - IE6-9 requires ActiveX or Flash to download files.
-    - iOS Safari file download may not work. <a href="https://git.io/ios_save">This is a known issue</a>.
-    - Importing a file requires support for the <a href="https://caniuse.com/#feat=fileapi">HTML5 File API</a>
+    <pre>
+        <b>Planilha:</b>
     </pre>
-    <script src="./script.js"></script>
+
+    <table id="data-table" border="1"></table>
+    
+    <script type="text/javascript" src="./script.js"></script>
 </body>
 </html>
