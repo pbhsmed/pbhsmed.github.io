@@ -173,6 +173,8 @@ function process_table(wb){
             var ref = tabela.Sheets[sheetName]["!ref"].split(":");
             var start = getPosBy(ref[0]);
             var end = getPosBy(ref[1]);
+
+            console.log(start, end);
         
             var _ref = sheet["!ref"].split(":");
             var _start = getPosBy(_ref[0]);
@@ -182,16 +184,23 @@ function process_table(wb){
                 if(k === "!ref"){continue;}
                 var pos = getPosBy(k);
                 var value = JSON.parse(JSON.stringify(sheet[k]));
-                pos.y += end.y;
+                if(end.y > 1){
+                    pos.y += 1;
+                    pos.y += end.y;
+                }
         
                 value.v = formalSTR(value.v);
                 value.w = formalSTR(value.w);
         
                 tabela.Sheets[sheetName][getRefBy(pos)] = value;
             }
-        
-            end.x = end.x > _end.x ? end.x : _end.x;
-            end.y = end.y + _end.y;
+
+            for(var k in tabela.Sheets[sheetName]){
+                if(k === "!ref"){continue;}
+                var pos = getPosBy(k);
+                end.x = end.x > pos.x ? end.x : pos.x;
+                end.y = end.y > pos.y ? end.y : pos.y;
+            }
         
             tabela.Sheets[sheetName]["!ref"] = getRefBy(start) + ":" + getRefBy(end);
         });
@@ -260,6 +269,7 @@ function handleDrop(e) {
     if (pending) return alertify.alert('Aguarde até que o arquivo atual seja processado.', function () { });
     var files = e.dataTransfer.files;
     memoryFiles = [];
+    typeArchiveChange();
     readFile(files);
 }
 
@@ -269,10 +279,10 @@ function handleDragover(e) {
     e.dataTransfer.dropEffect = 'copy';
 }
 
-if (drop.addEventListener) {
-    drop.addEventListener('dragenter', handleDragover, false);
-    drop.addEventListener('dragover', handleDragover, false);
-    drop.addEventListener('drop', handleDrop, false);
+if(document.body.addEventListener) {
+    document.body.addEventListener('dragenter', handleDragover, false);
+    document.body.addEventListener('dragover', handleDragover, false);
+    document.body.addEventListener('drop', handleDrop, false);
 }
 
 if(typeArchive.addEventListener){
