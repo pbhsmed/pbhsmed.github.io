@@ -92,9 +92,6 @@ function process_table(wb){
     var _start = getPosBy(_ref[0]);
     var _end = getPosBy(_ref[1]);
 
-    console.log(ref, start, end);
-    console.log(_ref, _start, _end);
-
     for(var k in sheet){
         if(k === "!ref"){continue;}
         var pos = getPosBy(k);
