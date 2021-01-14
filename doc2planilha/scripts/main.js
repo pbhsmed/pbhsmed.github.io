@@ -10,7 +10,7 @@ var tabela = {
     SheetNames: ["Tabela1"],
     Sheets: {
         Tabela1: {
-            "!ref": "A0:G0"
+            "!ref": "A1:A1"
         }
     },
     Workbook: {
@@ -83,21 +83,31 @@ function getRefBy(pos){
 
 function process_table(wb){
     var sheet = wb.Sheets[wb.SheetNames[0]];
-    var sheetName = tabela.SheetNames[0]
+    var sheetName = tabela.SheetNames[0];
     var ref = tabela.Sheets[sheetName]["!ref"].split(":");
     var start = getPosBy(ref[0]);
     var end = getPosBy(ref[1]);
+
+    var _ref = sheet["!ref"].split(":");
+    var _start = getPosBy(_ref[0]);
+    var _end = getPosBy(_ref[1]);
+
+    console.log(ref, start, end);
+    console.log(_ref, _start, _end);
 
     for(var k in sheet){
         if(k === "!ref"){continue;}
         var pos = getPosBy(k);
         pos.y += end.y;
 
-        tabela.Sheets[sheetName][getRefBy(pos)] = sheet[k];
+        sheet[k].v = String(sheet[k].v || "").replace(/\n/gi, " ").replace(/(\s+)/gi, " ").replace(/^(\s+)/gi, "").replace(/(\s+)$/gi, "");
+        sheet[k].w = String(sheet[k].w || "").replace(/\n/gi, " ").replace(/(\s+)/gi, " ").replace(/^(\s+)/gi, "").replace(/(\s+)$/gi, "");
 
-        end.x = end.x > pos.x ? end.x : pos.x;
-        end.y = end.y > pos.y ? end.y : pos.y;
+        tabela.Sheets[sheetName][getRefBy(pos)] = sheet[k];
     }
+
+    end.x = end.x > _end.x ? end.x : _end.x;
+    end.y = end.y + _end.y;
 
     console.log(sheet);
 
@@ -107,11 +117,10 @@ function process_table(wb){
 }
 
 function process_wb(wb) {
-    console.log(process_table(wb));
-    var o = XLSX.utils.sheet_to_html(process_table(wb), { editable: true }).replace("<table", '<table id="data-table" border="1"')
-    spinner.stop();
+    var o = XLSX.utils.sheet_to_html(process_table(wb), { editable: false }).replace("<table", '<table id="data-table" border="1"');
     document.getElementById('data-table').outerHTML = o;
     pending = false;
+    console.log(tabela.Sheets[tabela.SheetNames[0]]);
 }
 
 function xw(data, cb) {
@@ -160,6 +169,18 @@ function handleDrop(e) {
     e.preventDefault();
     if (pending) return alertify.alert('Aguarde até que o arquivo atual seja processado.', function () { });
     var files = e.dataTransfer.files;
+    tabela = {
+        Props: {},
+        SheetNames: ["Tabela1"],
+        Sheets: {
+            Tabela1: {
+                "!ref": "A1:A1"
+            }
+        },
+        Workbook: {
+            Names: []
+        }
+    };
     readFile(files);
 }
 
