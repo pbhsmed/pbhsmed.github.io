@@ -20,76 +20,60 @@
             border: 1px solid black
         }
     </style>
-</head>
 
-<body>
     <![if gt IE 9]>
-    <script type="text/javascript" src="https://unpkg.com/xlsx/dist/shim.min.js"></script>
-    <script type="text/javascript" src="https://unpkg.com/xlsx/dist/xlsx.full.min.js"></script>
+    <script type="text/javascript" src="./scripts/unpkg/shim.min.js"></script>
+    <script type="text/javascript" src="./scripts/unpkg/xlsx.full.min.js"></script>
 
-    <script type="text/javascript" src="https://unpkg.com/blob.js@1.0.1/Blob.js"></script>
-    <script type="text/javascript" src="https://unpkg.com/file-saver@1.3.3/FileSaver.js"></script>
+    <script type="text/javascript" src="./scripts/unpkg/Blob.js"></script>
+    <script type="text/javascript" src="./scripts/unpkg/FileSaver.js"></script>
     <![endif]>
 
-    <script src="https://sheetjs.com/demos/spin.js"></script>
+    <script src="./scripts/spin.js"></script>
+    <script src="./scripts/alertify.js"></script>
 
-    <script src="https://sheetjs.com/demos/alertify.js"></script>
-    <link rel="stylesheet" media="screen" href="https://sheetjs.com/demos/alertify.css">
-
-    <pre>
+    <link rel="stylesheet" media="screen" href="./style/alertify.css">
+</head>
+<body>
+    <pre style="text-align: center; user-select: none;">
         <h3>Documento de Texto para Planilha</h3>
         <div id="drop">
-              +---------------------------------------------------------+
-           \\ |                                                         | //
-        ----\\|    <b>Drop a spreadsheet file here to change table data</b>    |//----
-        ------|                                                         |------
-        ----//|   (note: this demo will only process the first sheet)   |\\----
-           // |                                                         | \\
-              +---------------------------------------------------------+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;+---------------------------------------------------------+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;\\&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;//&nbsp;&nbsp;&nbsp;
+----\\|&nbsp;&nbsp;<b>Solte o(s) arquivo(s) para coleta dos dados da tabela</b>&nbsp;&nbsp;|//----
+------|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|------
+----//|&nbsp;&nbsp;&nbsp;(observação: só procesará apenas a primeira folha)&nbsp;&nbsp;&nbsp;&nbsp;|\\----
+&nbsp;&nbsp;&nbsp;//&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;\\&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;+---------------------------------------------------------+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         </div>
     </pre>
     <br/>
-    <pre>
-        <b>Export it!</b>
-    </pre>
     <table id="xport">
         <tr>
             <td>
-                <pre>XLSX Excel 2007+ XML</pre>
-            </td>
-            <td>
-                <p id="xportxlsx" class="xport"><input type="submit" value="Export to XLSX!" onclick="doit('xlsx');">
+                <p id="xportods" class="xport"><input type="submit" value="Salvar como ODS" onclick="doit('ods');">
                 </p>
-                <p id="xlsxbtn" class="btn">Flash required for actually downloading the generated file.</p>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <pre>XLSB Excel 2007+ Binary</pre>
             </td>
             <td>
-                <p id="xportxlsb" class="xport"><input type="submit" value="Export to XLSB!" onclick="doit('xlsb');">
+                <p id="xportxlsx" class="xport"><input type="submit" value="Salvar como XLSX!" onclick="doit('xlsx');">
                 </p>
-                <p id="xlsbbtn" class="btn">Flash required for actually downloading the generated file.</p>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <pre>Comma Separated Values</pre>
             </td>
             <td>
-                <p id="xportcsv" class="xport"><input type="submit" value="Export to CSV!" onclick="doit('csv');"></p>
-                <p id="csvbtn" class="btn">Flash required for actually downloading the generated file.</p>
+                <p id="xportxlsb" class="xport"><input type="submit" value="Salvar como XLSB!" onclick="doit('xlsb');">
+                </p>
+            </td>
+            <td>
+                <p id="xportcsv" class="xport"><input type="submit" value="Salvar como CSV!" onclick="doit('csv');"></p>
             </td>
         </tr>
     </table>
-
+    <br/><br/><br/>
     <pre>
         <b>Planilha:</b>
     </pre>
 
     <table id="data-table" border="1"></table>
-    
-    <script type="text/javascript" src="./script.js"></script>
+
+    <script type="text/javascript" src="./scripts/main.js"></script>
 </body>
 </html>
