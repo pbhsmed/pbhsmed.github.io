@@ -101,8 +101,11 @@ function process_table(wb){
 
             for(var i=1; i<=_end.x; i++){
                 var key = getRefBy({x: i, y: 0});
-                if(cols.includes(formalSTR(sheet[key].v).toUpperCase()) !== true){
-                    cols.push(formalSTR(sheet[key].v).toUpperCase());
+                if((key in sheet) !== true){continue;}
+                var value = JSON.parse(JSON.stringify(sheet[key]));
+                var label = formalSTR(value.v || value.w || "").toUpperCase();
+                if(label.length > 0 && cols.includes(label) !== true){
+                    cols.push(label);
                 }
             }
         });
@@ -133,7 +136,9 @@ function process_table(wb){
 
             for(var i=0; i<=_end.x; i++){
                 var key = getRefBy({x: i, y: 0});
-                _cols[i] = formalSTR(sheet[key].v);
+                if((key in sheet) !== true){continue;}
+                var value = JSON.parse(JSON.stringify(sheet[key]));
+                _cols[i] = formalSTR(value.v || value.w || "").toUpperCase();
             }
 
             for(var k in sheet){
@@ -160,12 +165,8 @@ function process_table(wb){
             end.x = end.x > _end.x ? end.x : _end.x;
             end.y = end.y + _end.y;
         
-            console.log(sheet);
-        
             tabela.Sheets[sheetName]["!ref"] = getRefBy(start) + ":" + getRefBy(end);
         });
-
-        console.log(cols);
     }else{
         memoryFiles.forEach(function(wb){
             var sheet = wb.Sheets[wb.SheetNames[0]];
@@ -192,8 +193,6 @@ function process_table(wb){
             end.x = end.x > _end.x ? end.x : _end.x;
             end.y = end.y + _end.y;
         
-            console.log(sheet);
-        
             tabela.Sheets[sheetName]["!ref"] = getRefBy(start) + ":" + getRefBy(end);
         });
     }
@@ -202,7 +201,6 @@ function process_table(wb){
 }
 
 function typeArchiveChange(){
-    console.log(typeArchive.value);
     var tabela = process_table();
     var o = XLSX.utils.sheet_to_html(process_table(), { editable: false }).replace("<table", '<table id="data-table" border="1"');
     document.getElementById('data-table').outerHTML = o;
