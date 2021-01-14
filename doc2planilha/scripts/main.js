@@ -2,21 +2,11 @@ var pending = false;
 var rABS = typeof FileReader !== "undefined" && typeof FileReader.prototype !== "undefined" && typeof FileReader.prototype.readAsBinaryString !== "undefined";
 
 var drop = document.getElementById('drop');
+var typeArchive = document.getElementById('typeArchive');
 var spinner = new Spinner().spin(drop);
 spinner.stop();
 
-var tabela = {
-    Props: {},
-    SheetNames: ["Tabela1"],
-    Sheets: {
-        Tabela1: {
-            "!ref": "A1:A1"
-        }
-    },
-    Workbook: {
-        Names: []
-    }
-};
+var memoryFiles = [];
 
 function doit(type, fn, dl) {
     var elt = document.getElementById('data-table');
@@ -81,43 +71,148 @@ function getRefBy(pos){
     return ref;
 }
 
+function formalSTR(str){
+    return String(str || "").replace(/\n/gi, " ").replace(/(\s+)/gi, " ").replace(/^(\s+)/gi, "").replace(/(\s+)$/gi, "");
+}
+
 function process_table(wb){
-    var sheet = wb.Sheets[wb.SheetNames[0]];
+    var tabela = {
+        Props: {},
+        SheetNames: ["Tabela1"],
+        Sheets: {
+            Tabela1: {
+                "!ref": "A1:A1"
+            }
+        },
+        Workbook: {
+            Names: []
+        }
+    };
+
     var sheetName = tabela.SheetNames[0];
-    var ref = tabela.Sheets[sheetName]["!ref"].split(":");
-    var start = getPosBy(ref[0]);
-    var end = getPosBy(ref[1]);
 
-    var _ref = sheet["!ref"].split(":");
-    var _start = getPosBy(_ref[0]);
-    var _end = getPosBy(_ref[1]);
+    if(typeArchive.value === "quadro_escolar"){
+        var cols = ["ESCOLA"];
+        memoryFiles.forEach(function(wb){
+            var sheet = wb.Sheets[wb.SheetNames[0]];
+            var _ref = sheet["!ref"].split(":");
+            var _start = getPosBy(_ref[0]);
+            var _end = getPosBy(_ref[1]);
 
-    for(var k in sheet){
-        if(k === "!ref"){continue;}
-        var pos = getPosBy(k);
-        pos.y += end.y;
+            for(var i=1; i<=_end.x; i++){
+                var key = getRefBy({x: i, y: 0});
+                if(cols.includes(formalSTR(sheet[key].v).toUpperCase()) !== true){
+                    cols.push(formalSTR(sheet[key].v).toUpperCase());
+                }
+            }
+        });
 
-        sheet[k].v = String(sheet[k].v || "").replace(/\n/gi, " ").replace(/(\s+)/gi, " ").replace(/^(\s+)/gi, "").replace(/(\s+)$/gi, "");
-        sheet[k].w = String(sheet[k].w || "").replace(/\n/gi, " ").replace(/(\s+)/gi, " ").replace(/^(\s+)/gi, "").replace(/(\s+)$/gi, "");
+        cols.forEach(function(col, i){
+            var key = getRefBy({x: i, y: 0});
+            tabela.Sheets[sheetName][key] = {t: "s", v: col, w: col};
+            tabela.Sheets[sheetName]["!ref"] = "A1:" + getRefBy({x: (cols.length - 1), y: 0});
+        });
+        
+        memoryFiles.forEach(function(wb){
+            var sheet = wb.Sheets[wb.SheetNames[0]];
+            var ref = tabela.Sheets[sheetName]["!ref"].split(":");
+            var start = getPosBy(ref[0]);
+            var end = getPosBy(ref[1]);
+        
+            var _ref = sheet["!ref"].split(":");
+            var _start = getPosBy(_ref[0]);
+            var _end = getPosBy(_ref[1]);
+            var _cols = [];
 
-        tabela.Sheets[sheetName][getRefBy(pos)] = sheet[k];
+            var nomeEscola = String(sheet[getRefBy({x: 0, y: 0})].v || "").split(/\n/gi);
+            nomeEscola.forEach(function(str){
+                if(str.toUpperCase().search("ESCOLA") >= 0){
+                    nomeEscola = str;
+                }
+            });
+
+            for(var i=0; i<=_end.x; i++){
+                var key = getRefBy({x: i, y: 0});
+                _cols[i] = formalSTR(sheet[key].v);
+            }
+
+            for(var k in sheet){
+                if(k === "!ref"){continue;}
+                var pos = getPosBy(k);
+                var value = JSON.parse(JSON.stringify(sheet[k]));
+
+                if(pos.x === 0 && pos.y > 0){
+                    value.v = formalSTR(nomeEscola);
+                    value.w = formalSTR(nomeEscola);
+                    pos.y += end.y;
+                    tabela.Sheets[sheetName][getRefBy(pos)] = value;
+                }else if(pos.y > 0){
+                    value.v = formalSTR(value.v);
+                    value.w = formalSTR(value.w);
+                    pos.x = cols.indexOf(_cols[pos.x]);
+                    pos.y += end.y;
+                    if(pos.x > 0){
+                        tabela.Sheets[sheetName][getRefBy(pos)] = value;
+                    }
+                }
+            }
+        
+            end.x = end.x > _end.x ? end.x : _end.x;
+            end.y = end.y + _end.y;
+        
+            console.log(sheet);
+        
+            tabela.Sheets[sheetName]["!ref"] = getRefBy(start) + ":" + getRefBy(end);
+        });
+
+        console.log(cols);
+    }else{
+        memoryFiles.forEach(function(wb){
+            var sheet = wb.Sheets[wb.SheetNames[0]];
+            var ref = tabela.Sheets[sheetName]["!ref"].split(":");
+            var start = getPosBy(ref[0]);
+            var end = getPosBy(ref[1]);
+        
+            var _ref = sheet["!ref"].split(":");
+            var _start = getPosBy(_ref[0]);
+            var _end = getPosBy(_ref[1]);
+        
+            for(var k in sheet){
+                if(k === "!ref"){continue;}
+                var pos = getPosBy(k);
+                var value = JSON.parse(JSON.stringify(sheet[k]));
+                pos.y += end.y;
+        
+                value.v = formalSTR(value.v);
+                value.w = formalSTR(value.w);
+        
+                tabela.Sheets[sheetName][getRefBy(pos)] = value;
+            }
+        
+            end.x = end.x > _end.x ? end.x : _end.x;
+            end.y = end.y + _end.y;
+        
+            console.log(sheet);
+        
+            tabela.Sheets[sheetName]["!ref"] = getRefBy(start) + ":" + getRefBy(end);
+        });
     }
-
-    end.x = end.x > _end.x ? end.x : _end.x;
-    end.y = end.y + _end.y;
-
-    console.log(sheet);
-
-    tabela.Sheets[sheetName]["!ref"] = getRefBy(start) + ":" + getRefBy(end);
 
     return tabela.Sheets[sheetName];
 }
 
-function process_wb(wb) {
-    var o = XLSX.utils.sheet_to_html(process_table(wb), { editable: false }).replace("<table", '<table id="data-table" border="1"');
+function typeArchiveChange(){
+    console.log(typeArchive.value);
+    var tabela = process_table();
+    var o = XLSX.utils.sheet_to_html(process_table(), { editable: false }).replace("<table", '<table id="data-table" border="1"');
     document.getElementById('data-table').outerHTML = o;
+    console.log(tabela);
+}
+
+function process_wb(wb){
+    memoryFiles.push(wb);
+    typeArchiveChange();
     pending = false;
-    console.log(tabela.Sheets[tabela.SheetNames[0]]);
 }
 
 function xw(data, cb) {
@@ -166,18 +261,7 @@ function handleDrop(e) {
     e.preventDefault();
     if (pending) return alertify.alert('Aguarde até que o arquivo atual seja processado.', function () { });
     var files = e.dataTransfer.files;
-    tabela = {
-        Props: {},
-        SheetNames: ["Tabela1"],
-        Sheets: {
-            Tabela1: {
-                "!ref": "A1:A1"
-            }
-        },
-        Workbook: {
-            Names: []
-        }
-    };
+    memoryFiles = [];
     readFile(files);
 }
 
@@ -187,9 +271,12 @@ function handleDragover(e) {
     e.dataTransfer.dropEffect = 'copy';
 }
 
-
 if (drop.addEventListener) {
     drop.addEventListener('dragenter', handleDragover, false);
     drop.addEventListener('dragover', handleDragover, false);
     drop.addEventListener('drop', handleDrop, false);
+}
+
+if(typeArchive.addEventListener){
+    typeArchive.addEventListener('change', typeArchiveChange, false);
 }
