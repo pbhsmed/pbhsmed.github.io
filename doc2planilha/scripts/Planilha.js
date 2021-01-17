@@ -123,6 +123,7 @@ window.Planilha.prototype.removeEmpty = function(arr){
 }
 
 window.Planilha.prototype.formalSTR = function(str){
+    if(typeof str !== "string"){return str;}
     return String(str || "").replace(/\n/gi, " ").replace(/(\s+)/gi, " ").replace(/^(\s+)/gi, "").replace(/(\s+)$/gi, "");
 }
 
@@ -152,7 +153,7 @@ window.Planilha.prototype.arrayToSheet = function(arr){
     arr.forEach((row, y)=>{
         row.forEach((col, x)=>{
             var ref = this.getRefBy({x: x, y: y});
-            sheet[ref] = {t: "s", v: col, w: col};
+            sheet[ref] = {t: (typeof col === "number" ? "n" : "s"), v: col, w: col};
             endPos.x = endPos.x > x ? endPos.x : x;
         });
         endPos.y = endPos.y > y ? endPos.y : y;
@@ -221,7 +222,7 @@ window.Planilha.prototype.getDataSheet = function(){
     this.data.forEach((v, i)=>{
         var pos = this.lengthToCoordinate(i);
         var k = this.getRefBy(pos);
-        sheet[k] = {t: "s", v: v, w: v};
+        sheet[k] = {t: (typeof v === "number" ? "n" : "s"), v: v, w: v};
         endPos.x = endPos.x > pos.x ? endPos.x : pos.x;
         endPos.y = endPos.y > pos.y ? endPos.y : pos.y;
     });
@@ -252,7 +253,7 @@ window.Planilha.prototype.getDataSheet_quadro_escolar = function(){
 
     cols.forEach((col, i)=>{
         var key = this.getRefBy({x: i, y: 0});
-        sheet[key] = {t: "s", v: col, w: col};
+        sheet[key] = {t: (typeof col === "number" ? "n" : "s"), v: col, w: col};
 
         endPos.x = endPos.x > i ? endPos.x : i;
     });
@@ -278,7 +279,7 @@ window.Planilha.prototype.getDataSheet_quadro_escolar = function(){
             if(y <= 0){return false;}
             row.forEach((col, x)=>{
                 var pos = JSON.parse(JSON.stringify({x: x, y: y}));
-                var value = {t: "s", v: this.formalSTR(col), w: this.formalSTR(col)};
+                var value = {t: (typeof col === "number" ? "n" : "s"), v: this.formalSTR(col), w: this.formalSTR(col)};
 
                 if(x === 0){
                     value.v = this.formalSTR(nomeEscola);

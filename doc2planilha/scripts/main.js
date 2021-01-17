@@ -33,13 +33,81 @@ function fixdata(data) {
     return o;
 }
 
-function xw(data, sucess, error) {
+function StringToHTML(a){
+    if(!a || typeof a !== "string"){return [];}
+    var b, c = []; 
+    b = new window.DOMParser().parseFromString(a, "text/html").body;
+    if (!b || b.getElementsByTagName("parsererror").length){
+        console.error( "Invalid XML: " + a);
+    }else{
+        while(b.firstChild){c.push(b.firstChild); b.removeChild(b.firstChild);}
+    }
+    return c;
+}
+
+async function xw(data, file, sucess, error) {
     pending = true;
-    var v;
-    try {
-        v = XLSX.read(data, {type: 'binary'});
-    }catch(e){
-        error({t:"e",d:e.stack||e});
+    var v, fileName = file.name;
+
+    if((/(\.docx)/).test(fileName)){
+        try {
+            var result = await mammoth.convertToHtml({arrayBuffer: data}).catch(console.log);
+            var elements = StringToHTML(result.value);
+            var planilha = new Planilha();
+            var textContent = "";
+            elements.forEach(function(el, i){
+                if(String(el.tagName).toLowerCase() === "table"){
+                    var sheet = {
+                        FileName: (fileName+"_"+i),
+                        Props: {},
+                        SheetNames: ["Tabela1"],
+                        Sheets: {Tabela1: (XLSX.utils.table_to_sheet(el))},
+                        Workbook: {Names: Array(0)}
+                    };
+                    planilha.push(sheet);
+                }else{
+                    let t = el.querySelectorAll("table");
+                    if(t && t.length > 0){
+                        t.forEach(function(el, j){
+                            var sheet = {
+                                FileName: (fileName+"_"+i),
+                                Props: {},
+                                SheetNames: ["Tabela1"],
+                                Sheets: {Tabela1: (XLSX.utils.table_to_sheet(el))},
+                                Workbook: {Names: Array(0)}
+                            };
+                            planilha.push(sheet);
+                        });
+                    }else{
+                        textContent += el.textContent + "\n";
+                    }
+                }
+            });
+
+            for(var k in planilha.Sheets){
+                var value = planilha.Sheets[k]["A1"];
+                planilha.Sheets[k]["A1"].v = textContent + value.v;
+                planilha.Sheets[k]["A1"].w = textContent + value.w;
+            }
+            planilha.updateMatriz();
+
+            sucess({
+                Props: {},
+                SheetNames: ["Tabela1"],
+                Sheets: {Tabela1: (planilha.getDataSheet())},
+                Workbook: {Names: Array(0)}
+            });
+        }catch(e){
+            error({t:"e",d:e.stack||e});
+            return;
+        }
+    }else{
+        try {
+            v = XLSX.read(data, {type: 'binary'});
+        }catch(e){
+            error({t:"e",d:e.stack||e});
+            return;
+        }
     }
     if(v){
         sucess(v);
@@ -60,7 +128,7 @@ function readFile(files, index){
         var data = e.target.result;
         function doitnow(){
             try {
-                xw(data, function(wb){
+                xw(data, f, function(wb){
                     wb.FileName = f.name;
                     planilhaMain.push(wb);
                     console.log(wb);
