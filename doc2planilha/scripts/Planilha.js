@@ -7,9 +7,20 @@ window.Planilha = function(){
 
     this.typeArchives = [["normal", "Normal"], ["quadro_escolar", "Quadro Escolar"]];
     this.typeArchive = ["normal", "Normal"];
+
+    this.clear();
 }
 
 window.Planilha.prototype.onChange = function(){return;}
+
+window.Planilha.prototype.clear = function(){
+    this.SheetNames = [];
+    this.Sheets = {};
+    this.width = 0;
+    this.height = 0;
+    this.data = [];
+    this.onChange();
+}
 
 window.Planilha.prototype.getHTMLSelect = function(){
     var select = document.createElement("select");
@@ -118,7 +129,7 @@ window.Planilha.prototype.formalSTR = function(str){
 window.Planilha.prototype.sheetToArray = function(sheet){
     var arr = [[]];
     for(var k in sheet){
-        if(k === "!ref"){continue;}
+        if((/^([A-Z]+)([0-9]+)$/).test(k) === false){continue;}
         var pos = this.getPosBy(k);
         if(Array.isArray(arr[pos.y]) !== true){
             arr[pos.y] = [];
@@ -190,6 +201,10 @@ window.Planilha.prototype.updateMatriz = function(){
 }
 
 window.Planilha.prototype.push = function(wb){
+    if(this.SheetNames.includes(wb.FileName)){
+        this.updateMatriz();
+        return;
+    }
     this.SheetNames.push(wb.FileName);
     this.Sheets[wb.FileName] = JSON.parse(JSON.stringify(wb.Sheets[wb.SheetNames[0]]));
     this.updateMatriz();
@@ -227,7 +242,8 @@ window.Planilha.prototype.getDataSheet_quadro_escolar = function(){
 
     this.SheetNames.forEach(name => {
         var arr = this.sheetToArray(this.Sheets[name]);
-        arr[0].forEach((label, i)=>{
+        arr[0].forEach((l, i)=>{
+            label = this.formalSTR(l);
             if(i > 0 && label.length > 0 && cols.includes(label) !== true){
                 cols.push(label);
             }
@@ -268,7 +284,7 @@ window.Planilha.prototype.getDataSheet_quadro_escolar = function(){
                     value.v = this.formalSTR(nomeEscola);
                     value.w = this.formalSTR(nomeEscola);
                 }else{
-                    pos.x = cols.indexOf(_cols[x]);
+                    pos.x = cols.indexOf(this.formalSTR(_cols[x]));
                 }
 
                 if(pos.x >= 0){

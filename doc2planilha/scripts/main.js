@@ -33,55 +33,76 @@ function fixdata(data) {
     return o;
 }
 
-function process_wb(wb){
-    planilhaMain.push(wb);
-    console.log(wb);
-    typeArchiveChange();
-    pending = false;
-}
-
-function xw(data, cb) {
+function xw(data, sucess, error) {
     pending = true;
-    spinner.stop();
-    spinner = new Spinner().spin(drop);
-    var worker = new Worker('./scripts/modify.js');
-    worker.onmessage = function (e) {
-        switch (e.data.t) {
-            case 'ready': break;
-            case 'e': pending = false; console.error(e.data.d); break;
-            case 'xlsx': cb(JSON.parse(e.data.d)); break;
-        }
-    };
-    var arr = rABS ? data : btoa(fixdata(data));
-    worker.postMessage({ d: arr, b: rABS });
+    var v;
+    try {
+        v = XLSX.read(data, {type: 'binary'});
+    }catch(e){
+        error({t:"e",d:e.stack||e});
+    }
+    if(v){
+        sucess(v);
+    }else{
+        error({t:"e",d:"Not Found!"});
+    }
 }
 
 function readFile(files, index){
     index = typeof index === "number" ? index : 0;
-    if(index >= files.length){spinner.stop(); return;}
+    if(index >= files.length){spinner.stop(); pending = false; typeArchiveChange(); return;}
     var f = files[index];
     var reader = new FileReader();
-    reader.onload = function (e) {
-        if (typeof console !== 'undefined') console.log("onload", new Date());
+    reader.onload = function(e){
+        if(planilhaMain.SheetNames.includes(f.name)){
+            return;
+        }
         var data = e.target.result;
-        function doitnow() {
+        function doitnow(){
             try {
                 xw(data, function(wb){
                     wb.FileName = f.name;
-                    process_wb(wb);
+                    planilhaMain.push(wb);
+                    console.log(wb);
+                    if((index+1) >= files.length){
+                        spinner.stop();
+                        pending = false;
+                        typeArchiveChange();
+                    }else{
+                        readFile(files, index+1);
+                    }
+                }, function(e){
+                    if((index+1) >= files.length){
+                        spinner.stop();
+                        pending = false;
+                    }else{
+                        readFile(files, index+1);
+                    }
                 });
             } catch (e) {
+                spinner.stop();
                 console.log(e);
                 alertify.alert('Algo deu errado durante o processamento, tente novamente!', function () { });
                 pending = false;
             }
-            readFile(files, index+1);
         }
-        if (e.target.result.length > 1e6) alertify.confirm("Este arquivo tem "+ e.target.result.length +" bytes e pode demorar alguns instantes. Seu navegador pode travar durante este processo. Vamos jogar?", function (k) { if (k) doitnow(); });
-        else doitnow();
+
+        if(e.target.result.length > 1e6){
+            alertify.confirm("Este arquivo tem "+ e.target.result.length +" bytes e pode demorar alguns instantes. Seu navegador pode travar durante este processo. Vamos jogar?", function(k){
+                if(k){
+                    doitnow();
+                }
+            });
+        }else{
+            doitnow();
+        }
     };
-    if (rABS) reader.readAsBinaryString(f);
-    else reader.readAsArrayBuffer(f);
+
+    if(rABS){
+        reader.readAsBinaryString(f);
+    }else{
+        reader.readAsArrayBuffer(f);
+    }
 }
 
 function handleDrop(e) {
@@ -89,9 +110,11 @@ function handleDrop(e) {
     e.preventDefault();
     if (pending) return alertify.alert('Aguarde até que o arquivo atual seja processado.', function () { });
     var files = e.dataTransfer.files;
-    memoryFiles = [];
-    typeArchiveChange();
-    readFile(files);
+    spinner.stop();
+    spinner = new Spinner().spin(drop);
+    planilhaMain.clear();
+    document.getElementById('data-table').innerHTML = "";
+    readFile(files, 0);
 }
 
 function handleDragover(e) {

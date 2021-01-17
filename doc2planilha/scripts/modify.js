@@ -10,3 +10,4 @@ onmessage = function (oEvent) {
   } catch(e) { postMessage({t:"e",d:e.stack||e}); }
 	postMessage({t:"xlsx", d:JSON.stringify(v)});
 };
+
