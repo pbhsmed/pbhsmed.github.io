@@ -316,3 +316,43 @@ window.Planilha.prototype.toHTML = function(){
     
     return XLSX.utils.sheet_to_html(sheet, { editable: false }).replace("<table", '<table id="data-table" border="1"');
 }
+
+window.Planilha.prototype.toSheet = function(){
+    var sheet = {
+        "!ref": "A1:A1",
+        "!fullref": "A1:A1",
+        "!cols": [],
+        "!rows": []
+    };
+
+    if(this.typeArchive[0] === "quadro_escolar"){
+        sheet = this.getDataSheet_quadro_escolar();
+    }else{
+        sheet = this.getDataSheet();
+    }
+
+    sheet["!fullref"] = sheet["!ref"];
+    sheet["!cols"] = [];
+    sheet["!rows"] = [];
+
+    var arr = this.sheetToArray(sheet);
+
+    arr.forEach((row, y)=>{
+        row.forEach((col, x)=>{
+            if(!sheet["!cols"][x] || !sheet["!cols"][x].wch){
+                sheet["!cols"][x] = {
+                    wch: 5,
+                }
+            }
+
+            var w = sheet["!cols"][x].wch;
+            String(col || "").split("\n").forEach((str)=>{
+                w = Math.max(w, String(str).length + 5);
+            });
+
+            sheet["!cols"][x].wch = w;
+        });
+    });
+    
+    return sheet;
+}

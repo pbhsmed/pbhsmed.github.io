@@ -20,7 +20,11 @@ planilhaMain.onChange = function(p){
 
 function doit(type, fn, dl) {
     var elt = document.getElementById('data-table');
-    var wb = XLSX.utils.table_to_book(elt, { sheet: "Sheet JS" });
+    var sheet = planilhaMain.toSheet();
+
+    var wb = XLSX.utils.table_to_book(elt, { sheet: "Tabela - 01" });
+    wb.Sheets[wb.SheetNames[0]]["!cols"] = sheet["!cols"];
+    
     return dl ?
         XLSX.write(wb, { bookType: type, bookSST: true, type: 'base64' }) :
         XLSX.writeFile(wb, fn || ('Planilha.' + (type || 'xlsx')));
