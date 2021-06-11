@@ -18,7 +18,7 @@
 
         input.onSelect = function(v){
             var siest = data_SIEST.search(v, 1, ["SIEST"])[0];
-            var d = Object.assign(siest, data_ESCOLAS.search(siest["REG."] + " - " + v, 1)[0]);
+            var d = Object.assign(siest, data_ESCOLAS.search(siest["REG."] + " - " + (v.replace("ESCOLA MUNICIPAL", "EMEF").replace("ESCOLA MUNICIPAL DE EDUCAÇÃO INFANTIL", "EMEI")), 1)[0]);
 
             document.querySelector("body > .content .info").style.display = "";
 
@@ -31,9 +31,9 @@
                 <div label="Endereço">${d["Endereço"]}</div>
             </div>`;
 
-            /*console.log(d);
+            console.log(d);
             console.log(data_SIEST.search(v));
-            console.log(data_ESCOLAS.search(v, 10, ["Nome"]));*/
+            console.log(data_ESCOLAS.search(v, 10, ["Nome"]));
         };
     });
 })();
