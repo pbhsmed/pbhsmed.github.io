@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>SVG</title>
+  <script src="../src/JS.js"></script>
+</head>
+<body class="main">
+  
+  <script>
+    var svg = js('<svg width="100" height="100"><circle cx="50" cy="50" r="40" stroke="green" stroke-width="4" fill="yellow" /></svg>');
+
+    svg.find('circle').css({
+      "fill": 'red'
+    });
+
+    console.log(svg.find('circle').isSVG());
+
+    console.log(js('.main').attr('class'));
+
+    js('.main').append(svg);
+  </script>
+</body>
+</html>

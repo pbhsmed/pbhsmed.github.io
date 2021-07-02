@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title></title>
+  <script src="../src/JS.js"></script>
+</head>
+<body>
+  <script>
+    console.log(js.getThisLine());
+
+    js(function(){
+      var a = js("<div id=\"isId\"></div>");
+      js("body").append(a);
+      console.log(a);
+
+      a.css({"position": "absolute"});
+
+      a.append("<h1 name=\"select\">Ismael</h1>");
+      a.append("<h1 name=\"\">Souza</h1>");
+      a.append("<h1>Silva</h1>");
+
+      console.log(js.getThisLine());
+
+      console.log(js("#isId > *"));
+      console.log(js("h1").getAllPath());
+
+      var km = new js.Keymap();
+      km.install(document);
+      km.bind("ctrl+y", function(a, b){console.log(a, b); return false;});
+
+      var k = "", n = "0123456789abcdef";
+
+      for(var i=2; i<8; i++){
+        for(var j=0; j<16; j++){
+          k += n[i]+n[j];
+        }
+      }
+
+      console.log(k);
+      console.log(js.Crypto.fromHex(k));
+    });
+  </script>
+</body>
+</html>

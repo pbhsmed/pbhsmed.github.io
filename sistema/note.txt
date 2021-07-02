@@ -1,0 +1,9 @@
+https://www.gifex.com/brazil_maps/Belo_Horizonte_Neighborhood_Map_Brazil_2.htm
+
+
+Tooltips using SVG Path:
+https://medium.com/welldone-software/tooltips-using-svg-path-1bd69cc7becd
+
+
+How TO - Autocomplete:
+https://www.w3schools.com/howto/howto_js_autocomplete.asp

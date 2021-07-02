@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Canvas</title>
+  <script src="../src/JS.js"></script>
+  <script src="../src/canvas.js"></script>
+  <style>
+    body{
+      margin: 0px;
+      background: #dddddd;
+    }
+    canvas{
+      background: #ffffff;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="test"></canvas>
+  <script>
+    var c = js.canvas("test", {
+      width: 400, height: 400
+    });
+
+    console.log(c);
+
+    console.log(c.size());
+  </script>
+</body>
+</html>

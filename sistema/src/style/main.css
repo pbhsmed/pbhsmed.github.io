@@ -1,0 +1,640 @@
+body > *{
+    z-index: 1;
+}
+
+*{
+    scroll-behavior: smooth;
+}
+
+.page-link{
+    cursor: pointer;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+ 
+::-webkit-scrollbar-track {
+  background-color: rgba(158, 158, 158, 0.1);
+  border-radius: 5px;
+}
+ 
+::-webkit-scrollbar-thumb {
+  background-color: rgba(158, 158, 158, .6);
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover{
+  background-color: rgba(158, 158, 158, .4);
+}
+
+::-webkit-scrollbar-corner {
+  background-color: transparent;
+}
+
+.table-root{
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    width: auto;
+    height: 100%;
+}
+
+.table-root *{
+	scroll-behavior: auto !important;
+    box-sizing: border-box;
+}
+
+.table-root > *{
+    position: relative;
+    overflow-x: hidden;
+    overflow-y: hidden;
+    position: relative;
+    box-sizing: border-box;
+}
+
+.table-root table {
+    overflow: hidden;
+    white-space: nowrap;
+    min-width: 100%;
+    width: auto;
+    margin: 0px;
+}
+
+.table-root table tbody {
+    display: table;
+    width: 100%;
+}
+
+.table-root table tr{
+    display: table;
+}
+
+.table-root table tr.is_hover{
+    cursor: pointer;
+}
+
+.table-root table tr.is_hover:hover{
+    background-color: #bdbdbd;
+}
+
+.table-root > .table-body{
+    flex: 1;
+    overflow-x: auto;
+    overflow-y: auto;
+}
+
+.table-root > .table-body > .emptyTable{
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+    color: #757575;
+    font-size: 20px;
+}
+
+.table-root > .table-body > .emptyTable svg{
+    width: 50px;
+    height: 50px;
+    fill: #757575;
+    margin-bottom: 5px;
+}
+
+#ModalDialog .modal-title{
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+#MainApp, #Splash, #Access{
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    bottom: 0px;
+    right: 0px;
+    width: auto;
+    height: auto;
+    background-color: #263238;
+    display: flex;
+}
+
+#MainApp{
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+}
+
+#MainApp .PanelSystem-vertical-wrap{
+	height: auto;
+	min-height: 100%;
+	z-index: 9999999;
+}
+
+#MainApp .PanelSystem-vertical-wrap .PanelSystem-backdrop{
+	display: none;
+}
+
+#MainApp .PanelSystem-vertical-wrap .PanelSystem-vertical-bar{
+	width: 250px;
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+	background-color: #191f2b;
+	background-image: linear-gradient(to right bottom, #263238, #455a64);
+	color: #eceff1;
+	box-shadow: 0 8px 10px 1px rgba(0, 0, 0, .14), 0 3px 14px 2px rgba(0, 0, 0, .12), 0 5px 5px -3px rgba(0, 0, 0, .2);
+}
+
+#MainApp .PanelSystem-vertical-wrap .PanelSystem-vertical-bar *{
+	transition: background-color 0.2s ease-out, border-radius 0.2s ease-out, transform 0.2s ease-out;
+}
+
+#MainApp .PanelSystem-vertical-wrap .PanelSystem-vertical-bar .PanelSystem-logo{
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 15px;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+#MainApp .PanelSystem-vertical-wrap .PanelSystem-vertical-bar .PanelSystem-menu{
+	flex: 1;
+	background-color: rgba(255, 255, 255, 0.05);
+	overflow-y: auto;
+	border: 0px solid #616161;
+	border-top-width: 1px;
+	border-bottom-width: 1px;
+	padding: 15px 0px;
+}
+
+#MainApp .PanelSystem-vertical-wrap .PanelSystem-vertical-bar .PanelSystem-menu > div{
+	padding: 5px 15px;
+	display: flex;
+	align-items: center;
+	font-size: 14px;
+}
+
+#MainApp .PanelSystem-vertical-wrap .PanelSystem-vertical-bar .PanelSystem-menu > div:not(.PanelSystem-menu-iten-head){
+	cursor: pointer;
+}
+
+#MainApp .PanelSystem-vertical-wrap .PanelSystem-vertical-bar .PanelSystem-menu > div:not(.PanelSystem-menu-iten-head):hover{
+	background-color: rgba(255, 255, 255, .2);
+}
+
+#MainApp .PanelSystem-vertical-wrap .PanelSystem-vertical-bar .PanelSystem-menu > div:active{
+	opacity: 0.6;
+}
+
+#MainApp .PanelSystem-vertical-wrap .PanelSystem-vertical-bar .PanelSystem-menu > div.PanelSystem-menu-iten-active{
+    color: #ffffff;
+    font-weight: bold;
+    border-right: solid 5px #263238;
+    padding-left: 10px;
+    background-image: linear-gradient(to left, rgba(38, 50, 56, .58), transparent);
+    background-color: transparent !important;
+}
+
+#MainApp .PanelSystem-vertical-wrap .PanelSystem-vertical-bar .PanelSystem-menu > div.PanelSystem-menu-iten-active:hover{
+	opacity: 0.8;
+}
+
+#MainApp .PanelSystem-vertical-wrap .PanelSystem-vertical-bar .PanelSystem-menu > div .PanelSystem-space{
+    width: 20px;
+}
+
+#MainApp .PanelSystem-vertical-wrap .PanelSystem-vertical-bar .PanelSystem-menu > div .PanelSystem-icon{
+    position: relative;
+}
+
+#MainApp .PanelSystem-vertical-wrap .PanelSystem-vertical-bar .PanelSystem-menu > div .PanelSystem-icon svg{
+    width: 20px;
+	height: 20px;
+}
+
+#MainApp .PanelSystem-vertical-wrap .PanelSystem-vertical-bar .PanelSystem-menu > div .PanelSystem-label{
+	flex: 1;
+	padding-left: 15px;
+	overflow: hidden; 
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+#MainApp .PanelSystem-vertical-wrap .PanelSystem-vertical-bar .PanelSystem-account{
+	padding: 15px;
+	display: flex;
+	align-items: center;
+	cursor: pointer;
+}
+
+#MainApp .PanelSystem-vertical-wrap .PanelSystem-vertical-bar .PanelSystem-account:hover,
+#MainApp  > .content > .PanelSystem-container-bar-top .PanelSystem-container-MenuIcon:hover{
+	opacity: 0.8;
+}
+
+#MainApp .PanelSystem-vertical-wrap .PanelSystem-vertical-bar .PanelSystem-account:active,
+#MainApp  > .content > .PanelSystem-container-bar-top .PanelSystem-container-MenuIcon:active{
+	opacity: 0.3;
+	transform: scale(0.9);
+}
+
+#MainApp .PanelSystem-vertical-wrap .PanelSystem-vertical-bar .PanelSystem-account .profilePicture-icon{
+	width: 24px;
+	height: 24px;
+}
+
+#MainApp .PanelSystem-vertical-wrap .PanelSystem-vertical-bar .PanelSystem-account .PanelSystem-label{
+	flex: 1;
+	padding-left: 15px;
+    font-weight: bold;
+	overflow: hidden; 
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+#MainApp  > .content > .PanelSystem-container-bar-top .PanelSystem-container-MenuIcon{
+    display: block;
+}
+
+#MainApp .PanelSystem-vertical-wrap{
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    right: 0px;
+    bottom: 0px;
+    width: 100%;
+    height: 100%;
+    visibility: hidden;
+}
+
+#MainApp .PanelSystem-vertical-wrap.active{
+    visibility: visible;
+}
+
+#MainApp .PanelSystem-vertical-wrap .PanelSystem-backdrop{
+    position: absolute;
+    display: block;
+    top: 0px;
+    left: 0px;
+    right: 0px;
+    bottom: 0px;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, .0);
+    transition: background-color 0.2s ease-out;
+}
+
+#MainApp .PanelSystem-vertical-wrap.active .PanelSystem-backdrop{
+    background-color: rgba(0, 0, 0, .5);
+}
+
+#MainApp .PanelSystem-vertical-wrap .PanelSystem-vertical-bar{
+    position: absolute;
+    top: 0px;
+    left: -100%;
+    bottom: 0px;
+    height: 100%;
+    transition: left 0.2s ease-out;
+}
+
+#MainApp .PanelSystem-vertical-wrap.active .PanelSystem-vertical-bar{
+    left: 0%;
+}
+
+#MainApp > .app_bar{
+    width: 100%;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-bottom: solid 1px rgba(255, 255, 255, 0.2);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    user-select: none;
+    padding: 5px 10px;
+}
+
+#MainApp > .app_bar .title_bar{
+    font-size: 20px;
+    padding: 5px;
+    color: #fafafa;
+    font-weight: bold;
+}
+
+#MainApp > .app_bar .btn_bar{
+    padding: 5px;
+}
+
+#MainApp > .content{
+    position: relative;
+	display: flex;
+    flex-direction: column;
+	height: auto;
+	min-height: 100%;
+}
+
+#MainApp > .content > .PanelSystem-container-bar-top{
+    display: flex;
+	align-items: center;
+	padding: 15px;
+	z-index: 2;
+	background-color: #3c4f58;
+	color: #ffffff;
+    user-select: none;
+    border-bottom: solid 1px #636a6d;
+}
+
+#MainApp > .content > .PanelSystem-container-bar-top .PanelSystem-container-MenuIcon{
+	cursor: pointer;
+    display: flex;
+	align-items: center;
+}
+
+#MainApp > .content > .PanelSystem-container-bar-top .PanelSystem-container-MenuIcon > svg{
+    width: 24px;
+    height: 24px;
+}
+
+#MainApp > .content > .PanelSystem-container-bar-top .PanelSystem-container-title{
+	margin-left: 15px;
+	font-size: 18px;
+}
+
+#MainApp > .content > .content-main{
+    flex: 1;
+    position: relative;
+    width: 100%;
+    overflow-x: hidden;
+    overflow-y: auto;
+    display: flex;
+    box-sizing: border-box;
+}
+
+@media only screen and (max-width: 800px) {
+    #MainApp > .content > .content-main{
+        display: block;
+        padding-bottom: 50px;
+    }
+}
+
+#MainApp > .content > .content-main > .mapRegionais{
+    width: 40%;
+    height: 100%;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+#MainApp > .content > .content-main > .mapRegionais > svg{
+    width: 100%;
+    height: 100%;
+}
+
+#MainApp > .content > .content-main > .mapRegionais > svg .regionalPolygon{
+    position: relative;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    fill-opacity: 0.4;
+    z-index: 1;
+    stroke: #eceff1;
+}
+
+#MainApp > .content > .content-main > .mapRegionais > svg .regionalPolygon.hover{
+    fill-opacity: 1;
+    stroke-width: 6;
+    z-index: 9;
+}
+
+#MainApp > .content > .content-main > .mapRegionais > svg .regionalPolygon.select{
+    fill-opacity: 1;
+    stroke-width: 4;
+    z-index: 9;
+}
+
+#MainApp > .content > .content-main > .mapRegionais > svg .regional_tooltip{
+    cursor: pointer;
+}
+
+#MainApp > .content > .content-main > .mapRegionais > svg .regional_tooltip text{
+    fill: #263238;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 12px;
+}
+
+#MainApp > .content > .content-main > .mapRegionais > svg .regional_tooltip text.tooltip_text_title{
+    font-size: 15px;
+    font-weight: bold;
+}
+
+@media only screen and (max-width: 800px) {
+    #MainApp > .content > .content-main > .mapRegionais{
+        width: 100%;
+        height: 800px;
+        min-height: 400px;
+        max-height: 100vh;
+    }
+
+    #MainApp > .content > .content-main > .mapRegionais > svg .regional_tooltip text{
+        font-size: 10px;
+    }
+
+    #MainApp > .content > .content-main > .mapRegionais > svg .regional_tooltip text.tooltip_text_title{
+        font-size: 12px;
+        font-weight: bold;
+    }
+}
+
+#MainApp > .content > .content-main > .tableSolicitacoes{
+    position: relative;
+    flex: 1;
+    margin: 15px;
+    box-sizing: border-box;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+#MainApp > .content > .content-main > .tableSolicitacoes > .table-root{
+    background-color: #eceff1;
+    border-radius: 5px;
+    box-shadow: 0 4px 5px 0 rgba(0, 0, 0, .14), 0 1px 10px 0 rgba(0, 0, 0, .12), 0 2px 4px -1px rgba(0, 0, 0, .2);
+    flex: 1;
+}
+
+@media only screen and (max-width: 800px) {
+    #MainApp > .content > .content-main > .tableSolicitacoes{
+        display: block;
+        height: auto;
+    }
+
+    #MainApp > .content > .content-main > .tableSolicitacoes > .table-content{
+        overflow: hidden;
+    }
+}
+
+#MainApp > .content > .content-main .btnsRegionais{
+    position: relative;
+    padding: 10px 5px;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+#MainApp > .content > .content-main .btnsRegionais > .btn{
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: auto;
+    flex-wrap: wrap;
+    background-color: #cfd8dc;
+    border: solid 1px;
+    border-color: #90a4ae;
+    border-radius: 25px;
+    font-size: 11px;
+    margin: 5px;
+    padding: 5px 15px 5px 5px;
+    opacity: 0.6;
+}
+
+#MainApp > .content > .content-main .btnsRegionais > .btn:hover,
+#MainApp > .content > .content-main .btnsRegionais > .btn.hover,
+#MainApp > .content > .content-main .btnsRegionais > .btn.select{
+    opacity: 1;
+}
+
+#MainApp > .content > .content-main .btnsRegionais > .btn.select{
+    font-weight: bold;
+}
+
+#MainApp > .content > .content-main .btnsRegionais > .btn > .marker{
+    position: relative;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background-color: #90a4ae;
+    border: solid 2px #90a4ae;
+    margin-right: 5px;
+}
+
+#MainApp > .content > .content-main .btnsRegionais > .btn.select > .marker{
+    background-color: transparent !important;
+}
+
+#Splash, #Access{
+    font-family: montserrat;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    z-index: 999999999999 !important;
+}
+
+#Access > .content{
+    width: 95%;
+    max-width: 400px;
+    height: auto;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    padding-top: 50px;
+}
+
+#Access > .content button{
+    font-size: 13px;
+    font-weight: bold;
+    letter-spacing: 1px;
+    padding: 13px 28px;
+    text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.14);
+    text-transform: uppercase;
+    box-shadow: 0 4px 9px 0 rgba(0, 0, 0, 0.2);
+    border-radius: 100px !important;
+}
+
+#Access > .content p{
+    width: 100%;
+    text-align: left;
+    background-color: rgba(255, 255, 255, 0.1);
+    border: solid 1px rgba(255, 255, 255, 0.2);
+    font-family: montserrat;
+    font-size: 14px;
+    color: #eeeeee;
+    margin: 10px 0px;
+    padding: 5px 10px;
+    border-radius: 5px;
+}
+
+#Access > .content p.alert-warning{
+    background-color: #ffecb3;
+    border: solid 1px #ffca28;
+    color: #e65100;
+    text-align: justify;
+}
+
+#Access > .content a{
+    text-decoration: none;
+    color: #bbdefb;
+}
+
+#Access > .content a:hover{
+    text-decoration: underline;
+    color: #64b5f6;
+}
+
+#Splash .ring{
+    position: absolute;
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    animation: Splash_ring 2s linear infinite;
+}
+
+@keyframes Splash_ring{
+    0%{
+        transform: rotate(0deg);
+        box-shadow: 1px 5px 2px #f44336;
+    }
+    25%{
+        box-shadow: 1px 5px 2px #4caf50;
+    }
+    50%{
+        transform: rotate(180deg);
+        box-shadow: 1px 5px 2px #E91E63;
+    }
+    75%{
+        box-shadow: 1px 5px 2px #2196F3;
+    }
+    100%{
+        transform: rotate(360deg);
+        box-shadow: 1px 5px 2px #f44336;
+    }
+}
+
+#Splash .ring:before{
+    position: absolute;
+    content: "";
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 100%;
+    border-radius: 50%;
+    box-shadow: 0 0 5px rgba(255, 255, 255, 0.3);
+}
+
+#Splash span{
+    color: #eceff1;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    line-height: 200px;
+    animation: Splash_text 3s ease-in-out infinite;
+}
+
+@keyframes Splash_text{
+    50%{
+        color: #90a4ae;
+    }
+}
