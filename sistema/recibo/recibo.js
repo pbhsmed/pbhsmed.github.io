@@ -75,28 +75,32 @@ function roundRect(ctx, x, y, width, height, radius, fill, stroke){
     }
 }
 
-async function ImprimirRecibo(nome, regional, data, itens, isPrint){
+async function ImprimirRecibo(nome, codigo, regional, data, itens, isPrint){
     var canvas = document.createElement("canvas")
         ctx = canvas.getContext('2d');
     var margin = 10;
     var w = canvas.width = 793-15;
     var h = canvas.height = 1090;
+    var mainTop = margin;
+    var mainLeft = margin;
+    var mainright = w - margin;
+    var mainBottom = h/2;
 
     ctx.fillStyle = "#ffffff";
     ctx.fillRect (0, 0, w, h);
 
     var logoW = 200;
     var logoH = (118*logoW)/427;
-    await appendImageInCanvas(logoBPH, margin+5, margin+5, logoW, logoH, canvas);
+    await appendImageInCanvas(logoBPH, mainLeft+5, mainTop+5, logoW, logoH, canvas);
 
     ctx.font = 'bold 20px Arial';
     ctx.fillStyle = '#212121';
     ctx.textAlign = "left";
     ctx.textBaseline = "hanging";
-    ctx.fillText('RECIBO', 235, margin+14);
+    ctx.fillText('RECIBO - '+(new Date().getFullYear()), 235, mainTop+14);
 
     ctx.font = 'bold 26px Arial';
-    ctx.fillText('SMED - Secretaria Municipal de Educação', 235, margin+40);
+    ctx.fillText('SMED - Secretaria Municipal de Educação', 235, mainTop+40);
 
     ctx.fillStyle = '#000000';
 
@@ -120,17 +124,23 @@ async function ImprimirRecibo(nome, regional, data, itens, isPrint){
     ctx.fillText(LimitText(String(nome), 600, canvas), left_box+75, top_box+15);
 
     ctx.font = '16px Arial';
-    ctx.fillText('REGIONAL:', left_box+15, top_box+40);
+    ctx.fillText('CÓDIGO:', left_box+15, top_box+40);
 
     ctx.font = 'bold 16px Arial';
-    ctx.fillText(String(regional), left_box+110, top_box+40);
+    ctx.fillText(LimitText(String(codigo), 200, canvas), left_box+90, top_box+40);
 
     ctx.font = '16px Arial';
-    ctx.fillText('DATA:', left_box+255, top_box+40);
+    ctx.fillText('REGIONAL:', right_box-440, top_box+40);
+
+    ctx.font = 'bold 16px Arial';
+    ctx.fillText(LimitText(String(regional), 190, canvas), right_box-350, top_box+40);
+
+    ctx.font = '16px Arial';
+    ctx.fillText('DATA:', right_box-170, top_box+40);
 
     ctx.font = 'bold 16px Arial';
     data = data && data instanceof Date ? new Date(data) : new Date();
-    ctx.fillText((data.toLocaleDateString()), left_box+305, top_box+40);
+    ctx.fillText((data.toLocaleDateString()), right_box-120, top_box+40);
 
     itens = Array.isArray(itens) ? itens : [];
 
@@ -155,7 +165,7 @@ async function ImprimirRecibo(nome, regional, data, itens, isPrint){
         if(Array.isArray(item) && typeof item[0] === "string" && Number(item[1]) !== 0){
             ctx.font = '12px Arial';
             ctx.textAlign = "left";
-            ctx.fillText(LimitText(String(item[0]), 600, canvas), left_pos+30, (top_box+75)+(25*pos));
+            ctx.fillText(LimitText(String(item[0]), 280, canvas), left_pos+30, (top_box+75)+(25*pos));
 
             ctx.font = 'bold 12px Arial';
             ctx.textAlign = "right";
@@ -232,6 +242,7 @@ async function ImprimirRecibo(nome, regional, data, itens, isPrint){
 function emitir_recibo(isPrint){
     var params = new URL(location.href).searchParams;
     var nome = params.has("nome") ? String(params.get("nome")) : "";
+    var codigo = params.has("codigo") ? String(params.get("codigo")) : "";
     var regional = params.has("regional") ? String(params.get("regional")) : "";
     var data = params.has("data") ? String(params.get("data")) : "";
     var itens = params.has("data") ? params.get("itens") : "[]";
@@ -250,7 +261,7 @@ function emitir_recibo(isPrint){
         data = new Date(Number(data[3]), Number(data[2])-1, Number(data[1]));
     }
 
-    ImprimirRecibo(nome, regional, data, itens, isPrint);
+    ImprimirRecibo(nome, codigo, regional, data, itens, isPrint);
 }
 
 emitir_recibo(false);
