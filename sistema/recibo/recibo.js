@@ -195,7 +195,7 @@ async function ImprimirRecibo(nome, codigo, regional, data, itens, isPrint){
 
     ctx.font = '10px Arial';
     ctx.textBaseline = "ideographic";
-    ctx.fillText("Assinatura do Responsável do Recebimento", left_box+100, bottom_box-10);
+    ctx.fillText("Assinatura do Responsável pelo Recebimento", left_box+100, bottom_box-10);
 
     ctx.beginPath();
     ctx.moveTo(left_box+430, bottom_box-25);
