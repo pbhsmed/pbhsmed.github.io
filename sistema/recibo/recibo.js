@@ -162,14 +162,14 @@ async function ImprimirRecibo(nome, codigo, regional, data, itens, isPrint){
         var right_pos = i%2 === 0 ? left_box+(width_box/2)+20 : right_box;
         var pos = i === 0 ? 0 : Math.floor(i/2);
 
-        if(Array.isArray(item) && typeof item[0] === "string" && Number(item[1]) !== 0){
+        if(Array.isArray(item)){
             ctx.font = '12px Arial';
             ctx.textAlign = "left";
-            ctx.fillText(LimitText(String(item[0]), 280, canvas), left_pos+30, (top_box+75)+(25*pos));
+            ctx.fillText(LimitText(String(item[0] || ""), 280, canvas), left_pos+30, (top_box+75)+(25*pos));
 
             ctx.font = 'bold 12px Arial';
             ctx.textAlign = "right";
-            ctx.fillText(item[1], right_pos-30, (top_box+75)+(25*pos));
+            ctx.fillText((item[1] || ""), right_pos-30, (top_box+75)+(25*pos));
         }
 
         if(pos >= 0 && pos < 10){
