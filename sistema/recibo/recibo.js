@@ -127,14 +127,14 @@ async function ImprimirRecibo(tipo, nome, codigo, regional, data, itens, isPrint
     ctx.fillText(tipo !== 0 ? 'EMPRESA:' : 'CÓDIGO:', left_box+15, top_box+40);
 
     ctx.font = 'bold 16px Arial';
-    ctx.fillText(LimitText(String(codigo), 200, canvas), left_box+90, top_box+40);
+    ctx.fillText(LimitText(String(codigo), 350, canvas), left_box+100, top_box+40);
 
     if(tipo !== 0){
         ctx.font = '16px Arial';
-        ctx.fillText('REGIONAL:', right_box-440, top_box+40);
+        ctx.fillText('REGIONAL:', right_box-240, top_box+40);
 
         ctx.font = 'bold 16px Arial';
-        ctx.fillText(LimitText(String(regional), 190, canvas), right_box-350, top_box+40);
+        ctx.fillText(LimitText(String(regional), 190, canvas), right_box-150, top_box+40);
     }else{
         ctx.font = '16px Arial';
         ctx.fillText('REGIONAL:', right_box-440, top_box+40);
