@@ -265,7 +265,7 @@ async function ImprimirRecibo(tipo, nome, codigo, endereco, regional, data, iten
 
 function emitir_recibo(isPrint){
     var params = new URL(location.href).searchParams;
-    isPrint = params.has("imprimir") ? Number(params.get("imprimir")) === 1 : isPrint;
+    var imprimir = params.has("imprimir") ? Number(params.get("imprimir")) === 1 : isPrint;
     var nome = params.has("nome") ? String(params.get("nome")) : "";
     var tipo = params.has("tipo") ? Number(params.get("tipo")) : 0;
     var codigo = params.has("codigo") ? String(params.get("codigo")) : "";
@@ -290,6 +290,12 @@ function emitir_recibo(isPrint){
     }
 
     ImprimirRecibo(tipo, nome, (tipo !== 0 ? empresa : codigo), endereco, regional, data, itens, isPrint);
+
+    if(imprimir){
+        window.print();
+        window.open('','_parent','');
+        window.close();
+    }
 }
 
 emitir_recibo(false);
