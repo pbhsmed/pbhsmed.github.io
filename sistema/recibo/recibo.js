@@ -75,7 +75,7 @@ function roundRect(ctx, x, y, width, height, radius, fill, stroke){
     }
 }
 
-async function ImprimirRecibo(tipo, nome, codigo, regional, data, itens, isPrint){
+async function ImprimirRecibo(tipo, nome, codigo, endereco, regional, data, itens, isPrint){
     var canvas = document.createElement("canvas")
         ctx = canvas.getContext('2d');
     var margin = 10;
@@ -85,6 +85,8 @@ async function ImprimirRecibo(tipo, nome, codigo, regional, data, itens, isPrint
     var mainLeft = margin;
     var mainright = w - margin;
     var mainBottom = h/2;
+
+    var length_itens = 22;
 
     ctx.fillStyle = "#ffffff";
     ctx.fillRect (0, 0, w, h);
@@ -115,13 +117,22 @@ async function ImprimirRecibo(tipo, nome, codigo, regional, data, itens, isPrint
     roundRect(ctx, left_box, top_box, width_box, height_box, 10);
     //ctx.strokeRect(margin, margin+75, w-(margin*2), ((h/2)-(margin*2))-95);
 
-    roundRect(ctx, left_box+10, top_box+65, width_box-20, 280, 10);
-
     ctx.font = '16px Arial';
     ctx.fillText('NOME:', left_box+15, top_box+15);
 
     ctx.font = 'bold 16px Arial';
-    ctx.fillText(LimitText(String(nome), 600, canvas), left_box+75, top_box+15);
+    ctx.fillText(LimitText(String(nome), 635, canvas), left_box+75, top_box+15);
+
+    if(endereco && typeof endereco === "string"){
+        ctx.font = '16px Arial';
+        ctx.fillText('ENDEREÇO:', left_box+15, top_box+40);
+
+        ctx.font = 'bold 16px Arial';
+        ctx.fillText(LimitText(String(endereco), 600, canvas), left_box+115, top_box+40);
+
+        top_box += 25;
+        length_itens = length_itens - 2;
+    }
 
     ctx.font = '16px Arial';
     ctx.fillText(tipo !== 0 ? 'EMPRESA:' : 'CÓDIGO:', left_box+15, top_box+40);
@@ -150,6 +161,8 @@ async function ImprimirRecibo(tipo, nome, codigo, regional, data, itens, isPrint
         ctx.fillText((data.toLocaleDateString()), right_box-120, top_box+40);
     }
 
+    roundRect(ctx, left_box+10, top_box+65, width_box-20, 28*((length_itens-2)/2), 10);
+
     itens = Array.isArray(itens) ? itens : [];
 
     ctx.fillStyle = '#212121';
@@ -161,13 +174,13 @@ async function ImprimirRecibo(tipo, nome, codigo, regional, data, itens, isPrint
     ctx.lineWidth = 1;
     ctx.beginPath();
     ctx.moveTo((left_box+10)+(width_box/2), top_box+65);
-    ctx.lineTo((left_box+10)+(width_box/2), (top_box+65)+280);
+    ctx.lineTo((left_box+10)+(width_box/2), (top_box+65)+(28*((length_itens-2)/2)));
     ctx.stroke();
 
-    for(var i=0; i<22; i++){
+    for(var i=0; i<length_itens; i++){
         var item = itens[i];
         var left_pos = i%2 === 0 ? left_box : left_box+(width_box/2);
-        var right_pos = i%2 === 0 ? left_box+(width_box/2)+20 : right_box;
+        var right_pos = i%2 === 0 ? left_box+(width_box/2)+(length_itens-2) : right_box;
         var pos = i === 0 ? 0 : Math.floor(i/2);
 
         if(Array.isArray(item)){
@@ -180,7 +193,7 @@ async function ImprimirRecibo(tipo, nome, codigo, regional, data, itens, isPrint
             ctx.fillText((item[1] || ""), right_pos-30, (top_box+75)+(25*pos));
         }
 
-        if(pos >= 0 && pos < 10){
+        if(pos >= 0 && pos < ((length_itens-2)/2)){
             ctx.strokeStyle = "#9e9e9e";
             ctx.lineCap = "round";
             ctx.lineWidth = 1;
@@ -241,18 +254,23 @@ async function ImprimirRecibo(tipo, nome, codigo, regional, data, itens, isPrint
 
     if(isPrint){
         PrintImage(canvas.toDataURL());
-        return;
     }
+
+    document.querySelectorAll("canvas").forEach(function(canvas){
+        canvas.parentElement.removeChild(canvas);
+    });
     
     document.body.appendChild(canvas);
 }
 
 function emitir_recibo(isPrint){
     var params = new URL(location.href).searchParams;
+    isPrint = params.has("imprimir") ? Number(params.get("imprimir")) === 1 : isPrint;
     var nome = params.has("nome") ? String(params.get("nome")) : "";
     var tipo = params.has("tipo") ? Number(params.get("tipo")) : 0;
     var codigo = params.has("codigo") ? String(params.get("codigo")) : "";
     var empresa = params.has("empresa") ? String(params.get("empresa")) : "";
+    var endereco = params.has("endereco") ? String(params.get("endereco")) : null;
     var regional = params.has("regional") ? String(params.get("regional")) : "";
     var data = params.has("data") ? String(params.get("data")) : "";
     var itens = params.has("data") ? params.get("itens") : "[]";
@@ -271,7 +289,7 @@ function emitir_recibo(isPrint){
         data = new Date(Number(data[3]), Number(data[2])-1, Number(data[1]));
     }
 
-    ImprimirRecibo(tipo, nome, (tipo !== 0 ? empresa : codigo), regional, data, itens, isPrint);
+    ImprimirRecibo(tipo, nome, (tipo !== 0 ? empresa : codigo), endereco, regional, data, itens, isPrint);
 }
 
 emitir_recibo(false);
