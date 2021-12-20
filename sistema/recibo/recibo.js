@@ -293,8 +293,10 @@ function emitir_recibo(isPrint){
 
     if(imprimir){
         window.print();
-        window.open('','_parent','');
-        window.close();
+        setTimeout(function(){
+            window.open('','_parent','');
+            window.close();
+        }, 5000);
     }
 }
 
